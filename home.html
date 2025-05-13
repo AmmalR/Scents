@@ -29,6 +29,7 @@
             overflow-x: hidden;
             background-color: var(--light);
             color: var(--dark);
+            line-height: 1.6;
         }
         
         /* Preloader */
@@ -67,7 +68,7 @@
         .navbar {
             width: 100%;
             height: auto;
-            min-height: 60px;
+            min-height: 70px;
             display: flex;
             flex-wrap: wrap;
             padding: 15px 5%;
@@ -86,19 +87,48 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
         
+        /* Animated Logo */
         .logo-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            background: url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80') center/cover;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(212, 167, 106, 0.5);
+            animation: pulse 4s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(212, 167, 106, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(212, 167, 106, 0.8); }
+        }
+        
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(50, 27, 8, 0.3);
+            border-radius: 50%;
         }
         
         .logo {
-            width: 50px;
-            height: auto;
-            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease;
         }
         
-        .logo:hover {
-            transform: scale(1.05);
+        .logo-container:hover .logo {
+            transform: rotate(15deg) scale(1.1);
         }
         
         .nav-links {
@@ -197,6 +227,7 @@
             display: flex;
             align-items: center;
             overflow: hidden;
+            margin-top: 70px; /* Added to account for fixed navbar */
         }
         
         .hero::before {
@@ -225,6 +256,7 @@
             flex: 1;
             position: relative;
             perspective: 1000px;
+            padding: 20px;
         }
         
         .hero-image {
@@ -269,6 +301,13 @@
             text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
             opacity: 0;
             animation: fadeInUp 1s ease 0.7s forwards;
+        }
+        
+        .hero-text p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
         }
         
         .hero-text .highlight {
@@ -391,13 +430,18 @@
             .hero-text h1 {
                 font-size: 48px;
             }
+            
+            .hero-image {
+                max-width: 350px;
+                height: 450px;
+            }
         }
         
         @media (max-width: 992px) {
             .hero-content {
                 flex-direction: column;
                 text-align: center;
-                padding-top: 100px;
+                padding-top: 80px;
             }
             
             .hero-image {
@@ -407,7 +451,7 @@
             }
             
             .hero-text {
-                padding: 0;
+                padding: 0 20px;
             }
             
             .hero-text h1 {
@@ -455,12 +499,16 @@
                 padding: 15px 20px;
             }
             
-            .logo {
-                width: 150px;
+            .hero {
+                margin-top: 60px;
             }
             
             .hero-text h1 {
                 font-size: 32px;
+            }
+            
+            .hero-text p {
+                font-size: 16px;
             }
             
             .search-input {
@@ -481,6 +529,10 @@
             .discover-btn {
                 padding: 12px 30px;
                 font-size: 16px;
+            }
+            
+            .hero-content {
+                padding-top: 60px;
             }
         }
     </style>
@@ -509,7 +561,7 @@
         </ul>
         
         <form action="/search" method="get" class="search-form">
-            <input type="text" name="q" placeholder="Search fragrances..." class="search-input">
+            <input type="text" name="q" placeholder="Search ..." class="search-input">
             <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
         </form>
     </nav>
@@ -517,9 +569,9 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="floating-elements">
-            <div class="floating-element" style="width: 50px; height: 50px; top: 20%; left: 10%; background-image: url('https://images.unsplash.com/photo-1603006905003-be475563bc59?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNhbmRsZXN8ZW58MHx8MHx8fDA%3D');"></div>
-            <div class="floating-element" style="width: 40px; height: 40px; top: 70%; left: 80%; background-image: url('https://images.unsplash.com/photo-1602409339188-95d178a611a0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNhbmRsZXN8ZW58MHx8MHx8fDA%3D');"></div>
-            <div class="floating-element" style="width: 60px; height: 60px; top: 40%; left: 85%; background-image: url('https://plus.unsplash.com/premium_photo-1666632471938-53ce50c19dfd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDF8fGNhbmRsZXN8ZW58MHx8MHx8fDA%3D');"></div>
+            <div class="floating-element" style="width: 50px; height: 50px; top: 20%; left: 10%; background-image: url('Beam.png');"></div>
+            <div class="floating-element" style="width: 40px; height: 40px; top: 70%; left: 80%; background-image: url('Beam.png');"></div>
+            <div class="floating-element" style="width: 60px; height: 60px; top: 40%; left: 85%; background-image: url('Beam.png');"></div>
         </div>
         
         <div class="hero-content">
@@ -530,6 +582,7 @@
             <div class="hero-text">
                 <h2 class="animate__animated">Perfumes & Candles</h2>
                 <h1 class="animate__animated"><span style="color: var(--light);">Unwind</span> your Exhaustion with our <span class="highlight">Premium</span> Scents</h1>
+                <p class="animate__animated">Experience the luxury of handcrafted fragrances that transform your space into a sanctuary of relaxation and elegance.</p>
                 <a href="discover.html"><button class="discover-btn animate__animated">DISCOVER</button></a>
             </div>
         </div>
@@ -567,9 +620,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             const floatingContainer = document.querySelector('.floating-elements');
             const elements = [
-                'https://images.unsplash.com/photo-1603006905003-be475563bc59?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNhbmRsZXN8ZW58MHx8MHx8fDA%3D',
-                'https://images.unsplash.com/photo-1602409339188-95d178a611a0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGNhbmRsZXN8ZW58MHx8MHx8fDA%3D',
-                'https://plus.unsplash.com/premium_photo-1666632471938-53ce50c19dfd?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDF8fGNhbmRsZXN8ZW58MHx8MHx8fDA%3D'
+                'Beam.png',
+                'Beam.png',
+                'Beam.png'
             ];
             
             for (let i = 0; i < 8; i++) {

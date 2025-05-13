@@ -3,122 +3,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scents</title>
-    <link rel="stylesheet" href="proj.css">
-    <script src="https://kit.fontawesome.com/7119af8b73.js" crossorigin="anonymous"></script>
+    <title>Collections | Scents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/236x/89/55/9e/89559ea3c39439bebdfa0c89d402a6a3.jpg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        :root {
+            --primary: #8B5A2B;
+            --secondary: #D4A76A;
+            --dark: #321B08;
+            --light: #FFF8F0;
+            --accent: #6D4C3D;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        /* Animated Logo */
+        .logo-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80') center/cover;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(212, 167, 106, 0.5);
+            animation: pulse 4s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(212, 167, 106, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(212, 167, 106, 0.8); }
+        }
+        
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(50, 27, 8, 0.3);
+            border-radius: 50%;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease;
+        }
+        
+        .logo-container:hover .logo {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        /* Navbar - Matching Homepage */
+        .navbar {
+            width: 100%;
+            height: auto;
+            min-height: 70px;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 15px 5%;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(50, 27, 8, 0.9);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-links {
+            display: flex;
+            margin: 10px 0;
+        }
+        
+        .nav-links li {
+            list-style: none;
+            padding: 10px 20px;
+        }
+        
+        .nav-links a {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .search-form {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+        }
+        
+        .search-input {
+            padding: 10px 15px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            width: 180px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .search-btn {
+            background-color: transparent;
+            color: white;
+            border: none;
+            margin-left: 10px;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        /* Collections Page Styling */
+        .catagory {
+            padding-top: 100px;
+            background-color: var(--light);
+        }
+        
+        .collection-section {
+            padding: 50px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .section-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 40px;
+            font-style: italic;
+            text-decoration: underline;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.03);
+        }
+        
+        .product-info {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .product-description {
+            line-height: 1.7;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .price-btn-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .product-price {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .add-to-cart {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .add-to-cart:hover {
+            background-color: var(--dark);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--dark);
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .section-title {
+                font-size: 36px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 20px;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-form {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+            
+            .section-subtitle {
+                font-size: 20px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .collection-section {
+                padding: 30px 15px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+            
+            .product-image {
+                height: 250px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-  <div class="catagory">
-      <div class="navbar">
-        <h1>A <span style="color: rgb(181, 86, 9);">&</span> M</h1>
-
-        <ul>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="Beige Cute Minimalistic Candle Logo.png" alt="Scents Logo" class="logo">
+        </div>
+        
+        <ul class="nav-links">
             <li><a href="home.html">HOME</a></li>
-            <li><a href="Catagory.html">BLOG</a></li>
+            <li><a href="Catagory.html">COLLECTIONS</a></li>
             <li><a href="Aboutus.html">ABOUT US</a></li>
-            <li><a href="cntctpg.html">CONTACT US </a></li>
+            <li><a href="cntctpg.html">CONTACT</a></li>
         </ul>
-        <form action="/search" method="get" class="form">
-          <input type="text" name="q" placeholder="Search..." class="search"/>
-          <button type="submit" class="srch"><i class="fa-solid fa-magnifying-glass"></i></button>
+        
+        <form action="/search" method="get" class="search-form">
+            <input type="text" name="q" placeholder="Search..." class="search-input">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
         </form>
-        </div>  
+    </nav>
 
-
-      
-        <div class="ScentedCandles">
-          <h1>Scented Candles</h1>
-          <h2><i><u>More than Just a Frangrance</u></i></h2>
-          <div class="row">
-            <div class="start">
-              <img src="https://i.pinimg.com/564x/d4/39/5a/d4395afd96f01e212aaaabbbd8657a8b.jpg">
-              <h3 style="color: rgba(165, 87, 42, 0.933);">Vanilla</h3>
-              <p>Light a vanilla-scented candle and let your worries melt away, replaced by a sense of peace and happiness.
-                We use only the finest ingredients, including natural soy wax and essential oils, for a clean, long-lasting burn.
-                Each candle is hand-poured with love, ensuring a touch of artisan charm in your home.</p>
-                <img src="https://i.pinimg.com/564x/07/c5/9f/07c59f56da17ec50f0caad536ec9f0b2.jpg" alt="">
-                <h3 style="color: rgba(247, 142, 159, 0.948);">Sweet As Pie</h3>
-                <p>Where Comfort Meets Deliciousness
-                  Close your eyes and imagine: Grandma's kitchen after a baking frenzy, the warm aroma of buttery crust mingling with sweet fruits and fragrant spices. That's the magic you'll find in our Sweet As Pie scented candles.</p>
-                <img src="https://i.pinimg.com/564x/b2/f9/14/b2f914b7477d5077d99e30d84e469bb6.jpg" alt="">
-                <h3 style="color: rgba(88, 54, 10, 0.957);">Cinnamon Spiced Vanilla</h3>
-                  <p>Light one up to transform your space into a haven of warmth and comfort, ideal for unwinding after a long day or enjoying quiet moments with loved ones.
-                  Fill your home with the inviting aroma of the holidays, cozy evenings by the fireplace, or simply embracing the spirit of the season.</p>
-              </div>
+    <!-- Collections Content -->
+    <div class="catagory">
+        <!-- Scented Candles Section -->
+        <section class="collection-section">
+            <h1 class="section-title">Scented Candles</h1>
+            <h2 class="section-subtitle">More than Just a Fragrance</h2>
             
-            
-              <div class="mid">
-              <img src="https://i.pinimg.com/564x/a2/f2/be/a2f2beb64f6ce64296cd6fb93dce5b02.jpg">
-              <h3 style="color: rgba(56, 98, 8, 0.965);">Gardenia Rose</h3>
-              <p>Immerse yourself in a floral paradise with our Gardenia Rose scented candles.
-                Experience the captivating blend of:
-                Elegant Gardenia: Its creamy, heady fragrance evokes a luxurious and exotic atmosphere.
-                Romantic Rose: Delicate and sweet, this floral note adds a touch of timeless elegance.</p>
-                <img src="https://i.pinimg.com/564x/6c/bb/86/6cbb86689c8549e66063be5601900e36.jpg" alt="">
-                <h3 style="color: rgb(224, 188, 121);">Dreamy Oasis with Milk Rose</h3>
-                <p>Dive into a Dreamy Oasis with Milk Rose Scented Candles
-                  Imagine: Soft dewdrops glistening on velvety rose petals, their delicate fragrance mingling with the creamy coolness of fresh milk. This is the enchanting world conjured by our Milk Rose scented candles.
-              </div>
-            
-            
-            <div class="last">
-              <img src="https://i.pinimg.com/564x/ab/d7/70/abd7707c62f90ece62aeb6f8f0f74b7b.jpg" alt="">
-              <h3 style="color: rgb(126, 64, 74);">Apricot Blossom</h3>
-              <p>Bask in the Spring Sunshine with Apricot Blossom Scented Candles.<br>
-                Crafted with love:
-                Hand-poured with natural soy wax for a clean and gentle burn.
-                Infused with high-quality fragrance oils to capture the true essence of apricot blossoms.
-                Available in various sizes and burn times to fit your needs.</p>
-                <img src="https://i.pinimg.com/564x/28/a8/91/28a8916a5204774d26df00d23667bdeb.jpg" alt="">
-                <h3 style="color: rosybrown;">Rose Gold</h3>
-                <p>Rose gold isn't just a color, it's a feeling. It's the glint of sunlight on champagne bubbles, the warmth of a blush sunrise, the whisper of luxury against your skin. Now, capture that enigmatic essence with our Rose Gold scented candles.</p>
-
-            </div>
-          </div>
-        </div>
-        <div class="Perfumes">
-          <h1>Perfumes</h1>
-          <h2><i><u>Dreamy Whispers</u></i></h2>
-          <div class="row">
-            <div class="start">
-              <img src="https://i.pinimg.com/564x/a1/4b/af/a14baff01a1e8ba4ae1441d8cd425fe3.jpg" >
-              <h3 style="color: rgb(218, 127, 79);">Cherry Blossom</h3>
-              <p>Captivate the Senses with the Delicate Allure of Cherry Blossom Perfume
-                More than just a fragrance, cherry blossom perfume captures the ephemeral beauty of spring in a bottle. Immerse yourself in the soft, floral notes that evoke peaceful walks beneath blooming trees, gentle breezes carrying the promise of new beginnings.</p>
-            
-              <img src="https://images.pexels.com/photos/3865679/pexels-photo-3865679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" >
-              <h3 style="color: rgb(196, 156, 252);">Floral Charm: Lavender</h3>
-              <p>Lavender, the ubiquitous purple flower, isn't just for sachets and calming baths. Its essential oil offers a surprisingly versatile fragrance profile, making it a popular note in perfumery. But lavender isn't one-dimensional.
-                his iconic scent evokes tranquility, relaxation, and evokes memories of fields bathed in sunshine. Ideal for daytime wear or a calming evening spritz.
-              </p>
-            </div>
-
-            <div class="mid">
-              <img src="https://images.pexels.com/photos/713042/pexels-photo-713042.jpeg">
-              <h3 style="color: rgb(209, 150, 81);">Flowerbomb</h3>
-              <p>An Explosion of Floral Fireworks in a Bottle
-                More than just a perfume, Flowerbomb is an experience. Prepare to be captivated by a sensory explosion of thousands of blooms, delicately balanced with warm, comforting notes. This iconic fragrance is a celebration of femininity, joy, and pure olfactory indulgence.</p>
+            <div class="products-grid">
+                <!-- Vanilla Candle -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/d4/39/5a/d4395afd96f01e212aaaabbbd8657a8b.jpg" alt="Vanilla Scented Candle" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgba(165, 87, 42, 0.933);">Vanilla</h3>
+                        <p class="product-description">Light a vanilla-scented candle and let your worries melt away, replaced by a sense of peace and happiness. We use only the finest ingredients, including natural soy wax and essential oils, for a clean, long-lasting burn.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$24.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
                 
-              <img src="https://i.pinimg.com/564x/47/a7/6b/47a76b8e56003298cfee5b8ba0e2a93e.jpg">
-              <h3 style="color: rgb(162, 162, 221);">Botanical Oil</h3>
-              <p>Botanical Oil Perfumes
-                Transcend the synthetic and embrace the pure essence of nature with our Botanical Oil Perfumes. Handcrafted with meticulously sourced botanical oils, these are more than just fragrances; they're an aromatic experience that connects you to the vibrant heart of the earth.</p>
-              </div>
-
-            <div class="last">
-              <img src="https://images.pexels.com/photos/4041391/pexels-photo-4041391.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
-              <h3 style="color: palevioletred;">Pink Rose</h3>
-              <p>Immerse Yourself in the Delicate Embrace of Pink Rose Perfume
-                Beyond the vibrant fuchsia blooms lies a world of ethereal beauty, captured in the essence of pink rose perfume. Unlike its bolder red counterpart, pink rose offers a whisper of sweetness, a touch of innocence, and a captivating femininity that leaves a lasting impression.</p>
+                <!-- Sweet As Pie Candle -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/07/c5/9f/07c59f56da17ec50f0caad536ec9f0b2.jpg" alt="Sweet As Pie Candle" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgba(247, 142, 159, 0.948);">Sweet As Pie</h3>
+                        <p class="product-description">Where Comfort Meets Deliciousness. Close your eyes and imagine: Grandma's kitchen after a baking frenzy, the warm aroma of buttery crust mingling with sweet fruits and fragrant spices.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$26.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cinnamon Spiced Vanilla -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/b2/f9/14/b2f914b7477d5077d99e30d84e469bb6.jpg" alt="Cinnamon Spiced Vanilla Candle" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgba(88, 54, 10, 0.957);">Cinnamon Spiced Vanilla</h3>
+                        <p class="product-description">Light one up to transform your space into a haven of warmth and comfort, ideal for unwinding after a long day or enjoying quiet moments with loved ones.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$27.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Gardenia Rose -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/a2/f2/be/a2f2beb64f6ce64296cd6fb93dce5b02.jpg" alt="Gardenia Rose Candle" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgba(56, 98, 8, 0.965);">Gardenia Rose</h3>
+                        <p class="product-description">Immerse yourself in a floral paradise with our Gardenia Rose scented candles. Experience the captivating blend of elegant gardenia with romantic rose.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$29.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Dreamy Oasis -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/6c/bb/86/6cbb86689c8549e66063be5601900e36.jpg" alt="Dreamy Oasis Candle" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgb(224, 188, 121);">Dreamy Oasis with Milk Rose</h3>
+                        <p class="product-description">Dive into a Dreamy Oasis with Milk Rose Scented Candles. Imagine: Soft dewdrops glistening on velvety rose petals, their delicate fragrance mingling with the creamy coolness of fresh milk.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$28.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Apricot Blossom -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/ab/d7/70/abd7707c62f90ece62aeb6f8f0f74b7b.jpg" alt="Apricot Blossom Candle" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgb(126, 64, 74);">Apricot Blossom</h3>
+                        <p class="product-description">Bask in the Spring Sunshine with Apricot Blossom Scented Candles. Crafted with love: Hand-poured with natural soy wax for a clean and gentle burn.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$25.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rose Gold -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/28/a8/91/28a8916a5204774d26df00d23667bdeb.jpg" alt="Rose Gold Candle" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rosybrown;">Rose Gold</h3>
+                        <p class="product-description">Rose gold isn't just a color, it's a feeling. It's the glint of sunlight on champagne bubbles, the warmth of a blush sunrise, the whisper of luxury against your skin.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$30.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-          </div>
-        </div>
+        </section>
+        
+        <!-- Perfumes Section -->
+        <section class="collection-section">
+            <h1 class="section-title">Perfumes</h1>
+            <h2 class="section-subtitle">Dreamy Whispers</h2>
+            
+            <div class="products-grid">
+                <!-- Cherry Blossom -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/a1/4b/af/a14baff01a1e8ba4ae1441d8cd425fe3.jpg" alt="Cherry Blossom Perfume" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgb(218, 127, 79);">Cherry Blossom</h3>
+                        <p class="product-description">Captivate the Senses with the Delicate Allure of Cherry Blossom Perfume. More than just a fragrance, it captures the ephemeral beauty of spring in a bottle.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$49.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lavender -->
+                <div class="product-card">
+                    <img src="https://images.pexels.com/photos/3865679/pexels-photo-3865679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Lavender Perfume" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgb(196, 156, 252);">Floral Charm: Lavender</h3>
+                        <p class="product-description">Lavender offers a surprisingly versatile fragrance profile. This iconic scent evokes tranquility, relaxation, and memories of fields bathed in sunshine.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$45.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Flowerbomb -->
+                <div class="product-card">
+                    <img src="https://images.pexels.com/photos/713042/pexels-photo-713042.jpeg" alt="Flowerbomb Perfume" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgb(209, 150, 81);">Flowerbomb</h3>
+                        <p class="product-description">An Explosion of Floral Fireworks in a Bottle. More than just a perfume, Flowerbomb is an experience. Prepare to be captivated by a sensory explosion.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$59.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Botanical Oil -->
+                <div class="product-card">
+                    <img src="https://i.pinimg.com/564x/47/a7/6b/47a76b8e56003298cfee5b8ba0e2a93e.jpg" alt="Botanical Oil Perfume" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: rgb(162, 162, 221);">Botanical Oil</h3>
+                        <p class="product-description">Transcend the synthetic and embrace the pure essence of nature with our Botanical Oil Perfumes. Handcrafted with meticulously sourced botanical oils.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$52.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pink Rose -->
+                <div class="product-card">
+                    <img src="https://images.pexels.com/photos/4041391/pexels-photo-4041391.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Pink Rose Perfume" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name" style="color: palevioletred;">Pink Rose</h3>
+                        <p class="product-description">Immerse Yourself in the Delicate Embrace of Pink Rose Perfume. Unlike its bolder red counterpart, pink rose offers a whisper of sweetness and a captivating femininity.</p>
+                        <div class="price-btn-container">
+                            <span class="product-price">$47.99</span>
+                            <button class="add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
         <footer>
-          <p>&copy; 2024 Scents</p>
+            <p>&copy; 2024 Scents. All rights reserved.</p>
         </footer>
-      </div>
+    </div>
 </body>
 </html>

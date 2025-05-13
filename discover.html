@@ -3,92 +3,473 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scents</title>
-    <link rel="stylesheet" href="proj.css">
-    <script src="https://kit.fontawesome.com/7119af8b73.js" crossorigin="anonymous"></script>
+    <title>Discover | Scents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/236x/89/55/9e/89559ea3c39439bebdfa0c89d402a6a3.jpg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;600&display=swap');
+        
+        :root {
+            --primary: #8B5A2B;
+            --secondary: #D4A76A;
+            --dark: #321B08;
+            --light: #FFF8F0;
+            --accent: #6D4C3D;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        /* Animated Logo */
+        .logo-container {
+            position: relative;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: url('https://images.unsplash.com/photo-1605100804763-247f67b3557e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&q=80') center/cover;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(212, 167, 106, 0.5);
+            animation: pulse 4s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(212, 167, 106, 0.5); }
+            100% { box-shadow: 0 0 30px rgba(212, 167, 106, 0.8); }
+        }
+        
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(50, 27, 8, 0.3);
+            border-radius: 50%;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.5s ease;
+        }
+        
+        .logo-container:hover .logo {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        /* Navbar - Matching Homepage */
+        .navbar {
+            width: 100%;
+            height: auto;
+            min-height: 70px;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 15px 5%;
+            align-items: center;
+            justify-content: space-between;
+            background-color: rgba(50, 27, 8, 0.9);
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-links {
+            display: flex;
+            margin: 10px 0;
+        }
+        
+        .nav-links li {
+            list-style: none;
+            padding: 10px 20px;
+        }
+        
+        .nav-links a {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .search-form {
+            display: flex;
+            align-items: center;
+            margin: 10px;
+        }
+        
+        .search-input {
+            padding: 10px 15px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            width: 180px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .search-btn {
+            background-color: transparent;
+            color: white;
+            border: none;
+            margin-left: 10px;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        /* Discover Page Styling */
+        .discover {
+            padding-top: 100px;
+            background-color: var(--light);
+        }
+        
+        .naturalcandles, .naturalperfumes {
+            padding: 80px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .col-one, .col-two {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .naturalcandles img, .naturalperfumes img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease;
+        }
+        
+        .naturalcandles img:hover, .naturalperfumes img:hover {
+            transform: scale(1.02);
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--primary);
+            margin-bottom: 30px;
+            line-height: 1.3;
+        }
+        
+        p {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+        
+        .premium {
+            padding: 80px 5%;
+            background-color: rgba(208, 192, 173, 0.83);
+            text-align: center;
+        }
+        
+        .premium h1 {
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: var(--dark);
+        }
+        
+        .premium .row {
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .col-1, .col-2, .col-3 {
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+        }
+        
+        .image-container {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .image-container:hover {
+            transform: translateY(-10px);
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+        
+        .image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 30px 20px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .image-container:hover .image-overlay {
+            opacity: 1;
+        }
+        
+        .image-overlay h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .image-overlay p {
+            color: white;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .one { color: rgb(13, 155, 44); }
+        .two { color: rgb(107, 46, 77); }
+        .three { color: rgb(173, 68, 238); }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: var(--dark);
+            color: white;
+            font-size: 14px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .premium h1 {
+                font-size: 32px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .row {
+                flex-direction: column;
+            }
+            
+            .naturalperfumes .row {
+                flex-direction: column-reverse;
+            }
+            
+            .col-one, .col-two {
+                text-align: center;
+            }
+            
+            .image-container img {
+                height: 350px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 15px;
+            }
+            
+            .nav-links {
+                margin-top: 20px;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-form {
+                width: 100%;
+                justify-content: center;
+                margin-top: 15px;
+            }
+            
+            h1 {
+                font-size: 32px;
+            }
+            
+            p {
+                font-size: 16px;
+            }
+            
+            .premium h1 {
+                font-size: 28px;
+            }
+            
+            .image-container img {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .discover {
+                padding-top: 80px;
+            }
+            
+            .naturalcandles, .naturalperfumes, .premium {
+                padding: 50px 15px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .image-overlay h3 {
+                font-size: 20px;
+            }
+            
+            .image-overlay p {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="discover">
-    <div class="navbar">
-      <h1>A <span style="color: rgb(181, 86, 9);">&</span> M</h1>
-
-        <ul>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo-container">
+            <img src="Beige Cute Minimalistic Candle Logo.png" alt="Scents Logo" class="logo">
+        </div>
+        
+        <ul class="nav-links">
             <li><a href="home.html">HOME</a></li>
-            <li><a href="Catagory.html">BLOG</a></li>
+            <li><a href="Catagory.html">COLLECTIONS</a></li>
             <li><a href="Aboutus.html">ABOUT US</a></li>
-            <li><a href="cntctpg.html">CONTACT US </a></li>
+            <li><a href="cntctpg.html">CONTACT</a></li>
         </ul>
-        <form action="/search" method="get" class="form">
-          <input type="text" name="q" placeholder="Search..." class="search"/>
-          <button type="submit" class="srch"><i class="fa-solid fa-magnifying-glass"></i></button>
+        
+        <form action="/search" method="get" class="search-form">
+            <input type="text" name="q" placeholder="Search..." class="search-input">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
         </form>
-    </div>
+    </nav>
 
-    <div class="naturalcandles">
-      <div class="row">
-        <div class="col-one">
-          <img src="https://i.pinimg.com/236x/ba/1b/3a/ba1b3a5b00239da009b9733a4a943326.jpg" alt="">
-        </div>
-        <div class="col-two">
-          <h1><i>Nature's Essence <br>Scented Candles</i></h1>
-          <p>Nature's Essence scented candles aren't just candles; they're miniaturized escapes, offering a sensory journey into the heart of the outdoors.Let calming lavender and sandalwood transport you to a peaceful forest clearing, or evoke the ocean's embrace with refreshing sea salt and driftwood. These candles go beyond fragrance; they capture the essence of nature, offering a moment of tranquility and a reminder of the beauty that surrounds us.</p>
-        </div>
-      </div>
-    </div>
-
-    
-
-    <div class="premium">
-    <h1><i class="fa-solid fa-arrow-right"></i><i>  Our Premium Scents</i></h1>
-        <div class="row">
-            <div class="col-1">
-                <div class="image-container">
-                    <img src="https://i.pinimg.com/564x/a2/f2/be/a2f2beb64f6ce64296cd6fb93dce5b02.jpg" >
-                    <div class="image-overlay">
-                    <h3 class="one"><b>Gardenia Rose</b></h3>
-                      <p id="one"><b>Immerse yourself in a floral paradise with our Gardenia <span style="color: rgb(228, 255, 234);">Rose scented</span> candles.</b></p>
-                    </div>
-                  </div>
+    <!-- Discover Content -->
+    <div class="discover">
+        <!-- Natural Candles Section -->
+        <section class="naturalcandles">
+            <div class="row">
+                <div class="col-one">
+                    <img src="https://i.pinimg.com/236x/ba/1b/3a/ba1b3a5b00239da009b9733a4a943326.jpg" alt="Nature's Essence Scented Candles">
                 </div>
-
-            <div class="col-2">
-                <div class="image-container">
-                    <img src="https://i.pinimg.com/564x/ab/d7/70/abd7707c62f90ece62aeb6f8f0f74b7b.jpg" >
-                    <div class="image-overlay">
-                        <h3 class="two"><b>Appricot Blossom</b></h3>
-                      <p id="two"><b>Close your eyes and inhale the delicate essence of springtime blossoming with our captivating <span style="color: rgb(0, 0, 0);">Appricot Blossom</span> scented candles.</b></p>
-                    </div>
-                  </div>   
-               </div>
-
-            <div class="col-3">
-                <div class="image-container">
-                    <img src="https://images.pexels.com/photos/3865679/pexels-photo-3865679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
-                    <div class="image-overlay">
-                        <h3 class="three"><b>Lavender</b></h3>
-                      <p id="three"><b><span style="color: rgb(252, 252, 252);">Lavender</span> perfumes offer more than just calming vibes. They can be fresh, vibrant, and even gourmand.</b></p>
-                    </div>
-                  </div>
+                <div class="col-two">
+                    <h1><i>Nature's Essence <br>Scented Candles</i></h1>
+                    <p>Nature's Essence scented candles aren't just candles; they're miniaturized escapes, offering a sensory journey into the heart of the outdoors. Let calming lavender and sandalwood transport you to a peaceful forest clearing, or evoke the ocean's embrace with refreshing sea salt and driftwood. These candles go beyond fragrance; they capture the essence of nature, offering a moment of tranquility and a reminder of the beauty that surrounds us.</p>
                 </div>
-        </div>
+            </div>
+        </section>
+        
+        <!-- Premium Scents Section -->
+        <section class="premium">
+            <h1><i class="fa-solid fa-arrow-right"></i><i> Our Premium Scents</i></h1>
+            <div class="row">
+                <div class="col-1">
+                    <div class="image-container">
+                        <img src="https://i.pinimg.com/564x/a2/f2/be/a2f2beb64f6ce64296cd6fb93dce5b02.jpg" alt="Gardenia Rose Candle">
+                        <div class="image-overlay">
+                            <h3 class="one"><b>Gardenia Rose</b></h3>
+                            <p id="one"><b>Immerse yourself in a floral paradise with our Gardenia <span style="color: rgb(228, 255, 234);">Rose scented</span> candles.</b></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-2">
+                    <div class="image-container">
+                        <img src="https://i.pinimg.com/564x/ab/d7/70/abd7707c62f90ece62aeb6f8f0f74b7b.jpg" alt="Apricot Blossom Candle">
+                        <div class="image-overlay">
+                            <h3 class="two"><b>Apricot Blossom</b></h3>
+                            <p id="two"><b>Close your eyes and inhale the delicate essence of springtime blossoming with our captivating <span style="color: rgb(0, 0, 0);">Apricot Blossom</span> scented candles.</b></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-3">
+                    <div class="image-container">
+                        <img src="https://images.pexels.com/photos/3865679/pexels-photo-3865679.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Lavender Perfume">
+                        <div class="image-overlay">
+                            <h3 class="three"><b>Lavender</b></h3>
+                            <p id="three"><b><span style="color: rgb(252, 252, 252);">Lavender</span> perfumes offer more than just calming vibes. They can be fresh, vibrant, and even gourmand.</b></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Natural Perfumes Section -->
+        <section class="naturalperfumes">
+            <div class="row">
+                <div class="col-one">
+                    <h1><i>The Lavish Life Comes <br>with Great Fragrance</i></h1>
+                    <p>Scent isn't just a name, it's a promise. We believe the lavish life isn't about material possessions alone, but about experiences that elevate the senses. And what better way to do that than through the intoxicating world of fragrance? Forget the artificial allure of synthetic concoctions. At our shop, natural perfumes meet great fragrance, offering an elevated olfactory experience infused with the soul of nature.</p>
+                </div>
+                <div class="col-two">
+                    <img src="https://i.pinimg.com/236x/87/94/cb/8794cbb91cf6b8d34096dd3902fab846.jpg" alt="Luxury Perfumes">
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>&copy; 2024 Scents. All rights reserved.</p>
+        </footer>
     </div>
-    <div class="naturalperfumes">
-      <div class="row">
-        <div class="col-one">
-          <h1><i>The Lavish Life Comes <br>with Great Fragrance</i></h1>
-          <p>Scent isn't just a name, it's a promise. We believe the lavish life isn't about material possessions alone, but about experiences that elevate the senses. And what better way to do that than through the intoxicating world of fragrance?
-            Forget the artificial allure of synthetic concoctions. At our shop, natural perfumes meet great fragrance, offering an elevated olfactory experience infused with the soul of nature</p>
-        </div>
-        <div class="col-two">
-          <img src="https://i.pinimg.com/236x/87/94/cb/8794cbb91cf6b8d34096dd3902fab846.jpg" alt="">
-        </div>
-      </div>
-    </div>
-    <footer>
-      <p>&copy; 2024 Scents</p>
-    </footer>
-    </div>
-    
 </body>
 </html>
